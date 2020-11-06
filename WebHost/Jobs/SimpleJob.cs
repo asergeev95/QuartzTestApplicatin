@@ -18,7 +18,8 @@ namespace WebHost.Jobs
         public Task Execute(IJobExecutionContext context)
         {
             var data = _dataService.GetData(context.FireTimeUtc);
-            Console.WriteLine($"Received data: ${data.Select(d => d.AccountId).ToList()}");
+            
+            Console.WriteLine($"Received data: {data.First().AccountId} at {context.FireTimeUtc}");
             return Task.CompletedTask;
         }
     }

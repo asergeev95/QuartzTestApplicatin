@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 using Quartz;
+using Quartz.Spi;
 
 namespace WebHost.Jobs
 {
@@ -10,16 +11,19 @@ namespace WebHost.Jobs
     public class QuartzHostedService : IHostedService
     {
         private readonly ISchedulerFactory _schedulerFactory;
+        private readonly IJobFactory _jobFactory;
         private static IScheduler Scheduler { get; set; }
 
-        public QuartzHostedService(ISchedulerFactory schedulerFactory)
+        public QuartzHostedService(ISchedulerFactory schedulerFactory, IJobFactory jobFactory)
         {
             _schedulerFactory = schedulerFactory;
+            _jobFactory = jobFactory;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             Scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+            Scheduler.JobFactory = _jobFactory;
             await ConfigureSimpleJob();
             await Scheduler.Start(cancellationToken);
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebHost.Bootstrap;
 
 namespace WebHost
 {
@@ -19,6 +20,7 @@ namespace WebHost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddBackgroundJobs();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,5 +39,7 @@ namespace WebHost
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
+        
+        
     }
 }

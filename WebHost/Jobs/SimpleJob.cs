@@ -7,6 +7,7 @@ using Quartz;
 namespace WebHost.Jobs
 {
     [UsedImplicitly]
+    [DisallowConcurrentExecution]
     public class SimpleJob  : IJob
     {
         private readonly IDataService _dataService;
@@ -18,7 +19,6 @@ namespace WebHost.Jobs
         public Task Execute(IJobExecutionContext context)
         {
             var data = _dataService.GetData(context.FireTimeUtc);
-            
             Console.WriteLine($"Received data: {data.First().AccountId} at {context.FireTimeUtc}");
             return Task.CompletedTask;
         }
